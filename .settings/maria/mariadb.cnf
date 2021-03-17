@@ -1,0 +1,3 @@
+[mysqld]
+innodb_flush_method=O_DSYNC
+wait_timeout=600

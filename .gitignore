@@ -1,0 +1,7 @@
+.idea
+.data
+
+src/vendor
+src/temp
+src/log
+src/app/config/local.neon

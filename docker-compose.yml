@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+    app:        
+        build:
+            context: .
+            dockerfile: dockerfile-php8-maria103-composer-make
+        container_name: app
+        restart: on-failure
+        ports:
+            - 127.0.0.1:80:80
+            - 127.0.0.1:443:443
+        volumes:
+            - .:/var/www/html
+            #- ./.docker/php/php.ini:/ust/local/etc/php/php.ini
+            #- ./.docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+        environment:
+            #NETTE_DEBUG_SECRET: i_am_little_sherlock
+            NETTE_DEBUG: 1 
+        networks:
+            - dev_network
+            
+    database:
+        image: library/mariadb:10.3
+        container_name: db
+        restart: on-failure
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            TZ: "Europe/Prague"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+            - 127.0.0.1:3306:3306
+        volumes:
+            - .data/mysql:/var/lib/mysql
+            - .docker/maria/:/etc/mysql/conf.d:ro
+        networks:
+            - dev_network
+        
+networks:
+    dev_network:
+        name: dev_network
